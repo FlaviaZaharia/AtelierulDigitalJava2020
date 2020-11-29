@@ -1,4 +1,4 @@
-package lab2.ch2;
+package lab2.ch3;
 
 public class Fish extends Animal implements Pet{
     private String name;
@@ -23,8 +23,8 @@ public class Fish extends Animal implements Pet{
 
     @Override
     public void walk() {
-        super.walk();
-        System.out.println(" like a fish");
+        //super.walk();
+        System.out.println("Fish can't walk");
     }
 
     @Override

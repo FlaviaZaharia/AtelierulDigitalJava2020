@@ -1,4 +1,4 @@
-package lab2.ch2;
+package lab2.ch3;
 
 public class Cat extends Animal implements Pet{
     private String name;
@@ -7,7 +7,8 @@ public class Cat extends Animal implements Pet{
            this.name=name;
     }
     public Cat(){
-        super(4);
+        //super(4);
+        this("");
     }
     public void setName(String name){
         this.name=name;

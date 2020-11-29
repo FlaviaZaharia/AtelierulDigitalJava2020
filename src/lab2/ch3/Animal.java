@@ -1,4 +1,4 @@
-package lab2.ch2;
+package lab2.ch3;
 
 public abstract class Animal {
     protected int legs;
@@ -7,10 +7,10 @@ public abstract class Animal {
         this.legs=legs;
     }
     public void  walk(){
-        System.out.println("Walk");
+        System.out.print("Walk ");
     }
     public void eat(){
-        System.out.println("Eat");
+        System.out.print("Eat ");
     }
 
 }
