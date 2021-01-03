@@ -1,43 +1,108 @@
 package lab4.ch3;
 
 
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.util.Arrays;
+import java.util.Locale;
+import java.util.Scanner;
 
 public class Anagram {
-    private static String aux="";
-        public static void main(String[] args) throws IOException {
-            String str = "listen";
-            System.out.println("String is: "+str);
-            System.out.println("Anagram of the given string is: ");
-            FileWriter outputStream = new FileWriter("./src/lab4/ch3/output.txt");
-                int size = str.length();
-                Anagram a = new Anagram();
-                a.anagram(str, 0, size - 1);
-                outputStream.write(aux);
-                System.out.println(aux);
+    private static final String SMALL_LIST_FILE = "D:\\JavaProject\\src\\lab4\\ch3\\smalllist.txt";
+    private static final String BIG_LIST_FILE = "D:\\JavaProject\\src\\lab4\\ch3\\biglist.txt";
+    private static final String OUTPUT_FILE = "D:\\JavaProject\\src\\lab4\\ch3\\output.txt";
 
-        }
-        private void anagram(String str, int start, int end){
-            if (start == end)
-                aux+=str+'\n';
-               //System.out.println(str);
-            else {
-                for (int i = start; i <= end; i++) {
-                    str = swap(str, start, i);
-                    anagram(str, start + 1, end);
-                    str = swap(str, start, i);
-                }
+    static int anagramCount = 0;
+    static String[] anagramWords;
+
+    public static void main(String[] args) {
+        anagramWords = new String[0];
+
+        String anagramWord = "listen";
+        int n = anagramWord.length();
+        permute(anagramWord, 0, n - 1);
+
+        String[] words = new String[0];
+        int countOfWords = 0;
+        for(int i =0 ; i< anagramWords.length; i++) {
+            try {
+                words = Arrays.copyOf(words, words.length + 1);
+                words[countOfWords++] = searchWord(anagramWords[i], readListOfWords(SMALL_LIST_FILE));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
         }
-        public String swap(String a, int i, int j)
-        {
-            char temp;
-            char[] charArray = a.toCharArray();
-            temp = charArray[i];
-            charArray[i] = charArray[j];
-            charArray[j] = temp;
-            return String.valueOf(charArray);
+        writeInFile(words);
+    }
+
+    private static void permute(String str, int left, int right) {
+        if (left == right) {
+            anagramWords = Arrays.copyOf(anagramWords, anagramWords.length + 1);
+            anagramWords[anagramCount++] = str;
+            System.out.println(str);
+        } else {
+            for (int i = left; i <= right; i++) {
+                str = swap(str, left, i);
+                permute(str, left + 1, right);
+                str = swap(str, left, i);
+            }
         }
+    }
+
+    private static String swap(String initialString, int i, int j) {
+        char temp;
+        char[] charArray = initialString.toCharArray();
+        temp = charArray[i];
+        charArray[i] = charArray[j];
+        charArray[j] = temp;
+        return String.valueOf(charArray);
+    }
+
+    private static String[] readListOfWords(String fileName) throws FileNotFoundException {
+        String[] words = new String[0];
+        Scanner s = null;
+        int wordCount = 0;
+        try {
+            s = new Scanner(new BufferedReader(new FileReader(fileName)));
+            s.useLocale(Locale.US);
+            while (s.hasNext()) {
+                words = Arrays.copyOf(words, words.length + 1);
+                words[wordCount++] = s.next();
+            }
+        } finally {
+            if (s != null) s.close();
+        }
+
+        String[] appropriateLengthWordsArray = new String[wordCount];
+        System.arraycopy(words, 0, appropriateLengthWordsArray, 0, wordCount);
+        return appropriateLengthWordsArray;
+    }
+
+    private static String searchWord(String name, String[] wordsInPhoneBook) {
+        for (int i = 0; i < wordsInPhoneBook.length; i++) {
+            if (wordsInPhoneBook[i].equals(name)) {
+                return wordsInPhoneBook[i];
+            }
+        }
+        return "";
+    }
+
+    private static void writeInFile(String[] words) {
+        try {
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(OUTPUT_FILE));
+            copy(words, bufferedWriter);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void copy(String[] words, Writer writer) throws IOException {
+        try {
+            for (int i = 0; i < words.length; i++) {
+                writer.write(words[i]);
+            }
+        } finally {
+            if (writer != null) writer.close();
+        }
+    }
     }
 

@@ -1,4 +1,4 @@
-package lab4.IO;
+package lab4.ch1;
 
 public class Main {
     public static void main(String[] args) {

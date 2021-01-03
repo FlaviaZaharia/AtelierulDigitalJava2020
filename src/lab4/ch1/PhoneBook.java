@@ -1,7 +1,6 @@
-package lab4.IO;
+package lab4.ch1;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Scanner;
